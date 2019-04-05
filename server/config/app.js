@@ -12,6 +12,11 @@ let passportJWT = require("passport-jwt");
 let JWTStrategy = passportJWT.Strategy;
 let ExtractJWT = passportJWT.ExtractJwt;
 
+let passportLocal = require('passport-local');
+let localStrategy = passportLocal.Strategy;
+let flash = require('connect-flash');
+
+
 // database setup
 let mongoose = require("mongoose");
 let DB = require("./db");
@@ -38,7 +43,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../../public")));
+app.use(express.static(path.join(__dirname, "../../Assets")));
 
 //Adding static route to node_modules
 app.use(express.static(path.join(__dirname, "../../node_modules")));
@@ -54,6 +59,9 @@ app.use(
     resave: false
   })
 );
+
+// initialize flash
+app.use(flash());
 
 // initialize passport
 app.use(passport.initialize());
@@ -92,6 +100,10 @@ passport.use(strategy);
 //Routes for page
 app.use("/api", indexRouter);
 app.use("/api/users", usersRouter);
+
+app.get('*', (req, res) => {
+  res.sendfile(path.join(__dirname, '../../Assets/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

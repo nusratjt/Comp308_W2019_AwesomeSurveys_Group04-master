@@ -1,6 +1,9 @@
+let express = require("express");
 let passport = require("passport");
-let jwt = require("jsonwebtoken");
-let DB = require("../config/db");
+
+let jwt = require('jsonwebtoken');
+let DB = require('../config/db');
+
 
 // define the User Model
 let userModel = require("../models/user");
@@ -74,5 +77,5 @@ module.exports.processRegisterPage = (req, res, next) => {
 
 module.exports.performLogout = (req, res, next) => {
   req.logout();
-  res.json({ success: true, msg: "User Successfully Logged Out" });
+  res.json({ success: true, msg: "User Successfully Logged Out!" });
 };
